@@ -1,0 +1,7 @@
+region = "us-west1"
+zone = "us-west1-a"
+project = "learnautomation2021"
+username = "kishore"
+k8smaster_script_path = "/Users/kishore/Desktop/Tools/K8SHardwayGCP/scripts/k8smaster_bootstrap.sh"
+k8sworker_script_path = "/Users/kishore/Desktop/Tools/K8SHardwayGCP/scripts/k8sworker_bootstrap.sh"
+private_key_path = "/Users/kishore/.ssh/id_rsa"
