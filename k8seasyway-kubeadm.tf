@@ -53,6 +53,19 @@ resource "google_compute_address" "vm_static_ip_worker2" {
   name = "k8sworker2-ip"
 }
 
+# Public IP Output #
+
+output "out_master_pub_ip" {
+    value = google_compute_address.vm_static_ip_master.address
+}
+
+output "out_worker1_pub_ip" {
+    value = google_compute_address.vm_static_ip_worker1.address
+}
+
+output "out_worker2_pub_ip" {
+    value = google_compute_address.vm_static_ip_worker2.address
+}
 
 # Instance creation K8S Master
 
@@ -198,15 +211,4 @@ resource "google_compute_instance" "worker2" {
   }
 }
 
-output "out_k8smaster_pub_ip" {
-    value = google_compute_address.vm_static_ip_master.address
-}
-
-output "out_k8sworker1_pub_ip" {
-    value = google_compute_address.vm_static_ip_worker1.address
-}
-
-output "out_k8sworker2_pub_ip" {
-    value = google_compute_address.vm_static_ip_worker2.address
-}
 

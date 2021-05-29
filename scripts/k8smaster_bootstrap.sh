@@ -57,8 +57,9 @@ sudo apt-get install -y kubelet kubeadm kubectl
 
 sudo apt-mark hold kubelet kubeadm kubectl
 
+read -p " Enter the Public ip of the master: "
 
-IPADDR=`ip a|grep inet|head -3|tail -1|cut -c10-20`
+# IPADDR=`ip a|grep inet|head -3|tail -1|cut -c10-20`
 
 NODENAME=$(hostname -s)
 
