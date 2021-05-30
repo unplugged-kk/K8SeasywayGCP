@@ -26,5 +26,5 @@ sudo kubeadm join 10.240.0.10:6443 --token <token-id> \
 
 if you have differnt path for the script / username / ssh key it can be changed in terraform.tfvars
 
-metadata for the ssh keys also can be changes in the main TF file. so do the necessary changes accorioding to your envionment.
+metadata for the ssh keys also can be changes in the main TF file. so do the necessary changes according to your envionment.
 
