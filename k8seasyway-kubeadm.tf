@@ -39,7 +39,7 @@ resource "google_compute_firewall" "gcp-fw" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-#Network Interface Creation#
+# Public IP Creation#
 
 resource "google_compute_address" "vm_static_ip_master" {
   name = "k8smaster-ip"
