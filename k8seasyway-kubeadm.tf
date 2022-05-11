@@ -32,7 +32,7 @@ resource "google_compute_firewall" "gcp-fw" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80","443","22","6443","10254","8080"]
+    ports    = ["22","443","80","8080","9090","9000-10000","30000-40000","5601","6443"]
   }
 
   target_tags = ["k8s-infra","default-node-pool"]
@@ -88,8 +88,8 @@ resource "google_compute_instance" "master" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2010-groovy-v20210511a"
-      size = 100
+      image = "ubuntu-os-cloud/ubuntu-2004-focal-v20220419"
+      size = 30
     }
   }
 
@@ -99,12 +99,26 @@ resource "google_compute_instance" "master" {
   }
   
   metadata = {
-   ssh-keys = "kishore:${file("~/.ssh/id_rsa.pub")}"
+   ssh-keys = "kishorekumarbehera:${file("~/.ssh/id_rsa.pub")}"
  } 
 
-# We connect to our instance via Terraform and remotely executes our script using SSH
+# We connect to our instance via Terraform and remotely executes our script using SSH 
+  provisioner "file" {
+    source      = "/Users/kishorekumarbehera/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8smaster_bootstrap.sh"
+    destination = "/tmp/k8smaster_bootstrap.sh"
+    connection {
+      type        = "ssh"
+      host        = google_compute_address.vm_static_ip_master.address
+      user        = var.username
+      private_key = file(var.private_key_path)
+    }
+  }
+
   provisioner "remote-exec" {
-    script = var.k8smaster_script_path
+    inline = [
+      "sudo chmod +x /tmp/k8smaster_bootstrap.sh",
+      "sudo bash /tmp/k8smaster_bootstrap.sh",
+    ]
 
     connection {
       type        = "ssh"
@@ -136,8 +150,8 @@ resource "google_compute_instance" "worker1" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2010-groovy-v20210511a"
-      size = 100
+      image = "ubuntu-os-cloud/ubuntu-2004-focal-v20220419"
+      size = 50
     }
   }
 
@@ -147,12 +161,26 @@ resource "google_compute_instance" "worker1" {
   }
   
   metadata = {
-   ssh-keys = "kishore:${file("~/.ssh/id_rsa.pub")}"
+   ssh-keys = "kishorekumarbehera:${file("~/.ssh/id_rsa.pub")}"
  } 
 
 # We connect to our instance via Terraform and remotely executes our script using SSH
+  provisioner "file" {
+    source      = "/Users/kishorekumarbehera/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8sworker_bootstrap.sh"
+    destination = "/tmp/k8sworker_bootstrap.sh"
+    connection {
+      type        = "ssh"
+      host        = google_compute_address.vm_static_ip_worker1.address
+      user        = var.username
+      private_key = file(var.private_key_path)
+    }
+  }
+
   provisioner "remote-exec" {
-    script = var.k8sworker_script_path
+    inline = [
+      "sudo chmod +x /tmp/k8sworker_bootstrap.sh",
+      "sudo bash /tmp/k8sworker_bootstrap.sh",
+    ]
 
     connection {
       type        = "ssh"
@@ -184,8 +212,8 @@ resource "google_compute_instance" "worker2" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2010-groovy-v20210511a"
-      size = 100
+      image = "ubuntu-os-cloud/ubuntu-2004-focal-v20220419"
+      size = 50
     }
   }
 
@@ -195,13 +223,27 @@ resource "google_compute_instance" "worker2" {
   }
   
   metadata = {
-   ssh-keys = "kishore:${file("~/.ssh/id_rsa.pub")}"
+   ssh-keys = "kishorekumarbehera:${file("~/.ssh/id_rsa.pub")}"
  } 
 
 # We connect to our instance via Terraform and remotely executes our script using SSH
-  provisioner "remote-exec" {
-    script = var.k8sworker_script_path
+  provisioner "file" {
+    source      = "/Users/kishorekumarbehera/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8sworker_bootstrap.sh"
+    destination = "/tmp/k8sworker_bootstrap.sh"
+    connection {
+      type        = "ssh"
+      host        = google_compute_address.vm_static_ip_worker2.address
+      user        = var.username
+      private_key = file(var.private_key_path)
+    }
+  
+  }
 
+  provisioner "remote-exec" {
+    inline = [
+      "sudo chmod +x /tmp/k8sworker_bootstrap.sh",
+      "sudo bash /tmp/k8sworker_bootstrap.sh",
+    ]
     connection {
       type        = "ssh"
       host        = google_compute_address.vm_static_ip_worker2.address
