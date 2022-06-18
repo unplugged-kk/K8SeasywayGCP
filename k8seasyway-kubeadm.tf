@@ -104,7 +104,7 @@ resource "google_compute_instance" "master" {
 
 # We connect to our instance via Terraform and remotely executes our script using SSH 
   provisioner "file" {
-    source      = "/Users/kishorekumarbehera/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8smaster_bootstrap.sh"
+    source      = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8smaster_bootstrap.sh"
     destination = "/tmp/k8smaster_bootstrap.sh"
     connection {
       type        = "ssh"
@@ -166,7 +166,7 @@ resource "google_compute_instance" "worker1" {
 
 # We connect to our instance via Terraform and remotely executes our script using SSH
   provisioner "file" {
-    source      = "/Users/kishorekumarbehera/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8sworker_bootstrap.sh"
+    source      = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/k8sworker_bootstrap.sh"
     destination = "/tmp/k8sworker_bootstrap.sh"
     connection {
       type        = "ssh"
