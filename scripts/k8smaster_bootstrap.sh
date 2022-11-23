@@ -16,7 +16,7 @@ if [ "$DISTRIB_RELEASE" != "20.04" ]; then
     read
 fi
 
-KUBE_VERSION=1.23.6
+KUBE_VERSION=1.25.4
 
 
 ### setup terminal
@@ -154,14 +154,15 @@ mkdir -p ~/.kube
 sudo cp -i /etc/kubernetes/admin.conf ~/.kube/config
 
 ### CNI
-kubectl apply -f https://raw.githubusercontent.com/unplugged-kk/basic-scripts/master/kubeadm-k8s/ubuntu20_latest/calico.yaml
+kubectl apply -f https://raw.githubusercontent.com/killer-sh/cks-course-environment/master/cluster-setup/calico.yaml
 
 
 # etcdctl
 ETCDCTL_VERSION=v3.5.1
-ETCDCTL_VERSION_FULL=etcd-${ETCDCTL_VERSION}-linux-amd64
+ETCDCTL_ARCH=$(dpkg --print-architecture)
+ETCDCTL_VERSION_FULL=etcd-${ETCDCTL_VERSION}-linux-${ETCDCTL_ARCH}
 wget https://github.com/etcd-io/etcd/releases/download/${ETCDCTL_VERSION}/${ETCDCTL_VERSION_FULL}.tar.gz
-tar xzf ${ETCDCTL_VERSION_FULL}.tar.gz
+tar xzf ${ETCDCTL_VERSION_FULL}.tar.gz ${ETCDCTL_VERSION_FULL}/etcdctl
 mv ${ETCDCTL_VERSION_FULL}/etcdctl /usr/bin/
 rm -rf ${ETCDCTL_VERSION_FULL} ${ETCDCTL_VERSION_FULL}.tar.gz
 
