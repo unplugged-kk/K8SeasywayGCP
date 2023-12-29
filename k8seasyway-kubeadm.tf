@@ -99,12 +99,12 @@ resource "google_compute_instance" "master" {
   }
   
   metadata = {
-   ssh-keys = "kishore:${file("~/.ssh/id_rsa.pub")}"
+   ssh-keys = "kishore_behera2010:${file("~/.ssh/id_rsa.pub")}"
  } 
 
 # We connect to our instance via Terraform and remotely executes our script using SSH 
   provisioner "file" {
-    source      = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/latest/k8smaster_bootstrap.sh"
+    source      = "/home/kishore_behera2010/K8SeasywayGCP/scripts/latest/k8smaster_bootstrap.sh"
     destination = "/tmp/k8smaster_bootstrap.sh"
     connection {
       type        = "ssh"
@@ -161,12 +161,12 @@ resource "google_compute_instance" "worker1" {
   }
   
   metadata = {
-   ssh-keys = "kishore:${file("~/.ssh/id_rsa.pub")}"
+   ssh-keys = "kishore_behera2010:${file("~/.ssh/id_rsa.pub")}"
  } 
 
 # We connect to our instance via Terraform and remotely executes our script using SSH
   provisioner "file" {
-    source      = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/latest/k8sworker_bootstrap.sh"
+    source      = "/home/kishore_behera2010/K8SeasywayGCP/scripts/latest/k8sworker_bootstrap.sh"
     destination = "/tmp/k8sworker_bootstrap.sh"
     connection {
       type        = "ssh"
@@ -223,12 +223,12 @@ resource "google_compute_instance" "worker2" {
   }
   
   metadata = {
-   ssh-keys = "kishore:${file("~/.ssh/id_rsa.pub")}"
+   ssh-keys = "kishore_behera2010:${file("~/.ssh/id_rsa.pub")}"
  } 
 
 # We connect to our instance via Terraform and remotely executes our script using SSH
   provisioner "file" {
-    source      = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/latest/k8sworker_bootstrap.sh"
+    source      = "/home/kishore_behera2010/K8SeasywayGCP/scripts/latest/k8sworker_bootstrap.sh"
     destination = "/tmp/k8sworker_bootstrap.sh"
     connection {
       type        = "ssh"
