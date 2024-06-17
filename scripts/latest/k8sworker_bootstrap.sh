@@ -16,8 +16,20 @@ if [ "$DISTRIB_RELEASE" != "20.04" ]; then
     read
 fi
 
-KUBE_VERSION=1.28.2
+KUBE_VERSION=1.29.2
 
+# get platform
+PLATFORM=`uname -p`
+
+if [ "${PLATFORM}" == "aarch64" ]; then
+  PLATFORM="arm64"
+elif [ "${PLATFORM}" == "x86_64" ]; then
+  PLATFORM="amd64"
+else
+  echo "${PLATFORM} has to be either amd64 or arm64/aarch64. Check containerd supported binaries page"
+  echo "https://github.com/containerd/containerd/blob/main/docs/getting-started.md#option-1-from-the-official-binaries"
+  exit 1
+fi
 
 ### setup terminal
 apt-get --allow-unauthenticated update
@@ -66,22 +78,25 @@ apt-get install -y apt-transport-https ca-certificates
 mkdir -p /etc/apt/keyrings
 rm /etc/apt/keyrings/kubernetes-1-27-apt-keyring.gpg || true
 rm /etc/apt/keyrings/kubernetes-1-28-apt-keyring.gpg || true
+rm /etc/apt/keyrings/kubernetes-1-29-apt-keyring.gpg || true
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-1-27-apt-keyring.gpg
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-1-28-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-1-29-apt-keyring.gpg
 echo > /etc/apt/sources.list.d/kubernetes.list
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-1-27-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-1-28-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-1-29-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
 apt-get --allow-unauthenticated update
 apt-get --allow-unauthenticated install -y docker.io containerd kubelet=${KUBE_VERSION}-1.1 kubeadm=${KUBE_VERSION}-1.1 kubectl=${KUBE_VERSION}-1.1 kubernetes-cni
 apt-mark hold kubelet kubeadm kubectl kubernetes-cni
 
 
 ### install containerd 1.6 over apt-installed-version
-wget https://github.com/containerd/containerd/releases/download/v1.6.12/containerd-1.6.12-linux-amd64.tar.gz
-tar xvf containerd-1.6.12-linux-amd64.tar.gz
+wget https://github.com/containerd/containerd/releases/download/v1.6.12/containerd-1.6.12-linux-${PLATFORM}.tar.gz
+tar xvf containerd-1.6.12-linux-${PLATFORM}.tar.gz
 systemctl stop containerd
 mv bin/* /usr/bin
-rm -rf bin containerd-1.6.12-linux-amd64.tar.gz
+rm -rf bin containerd-1.6.12-linux-${PLATFORM}.tar.gz
 systemctl unmask containerd
 systemctl start containerd
 
