@@ -1,6 +1,6 @@
 region                = "us-west1"
 zone                  = "us-west1-c"
-project               = "kishore-k8s-project"
+project               = "kishore-cicd"
 username              = "kishore"
 k8smaster_script_path = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/latest/k8smaster_bootstrap.sh"
 k8sworker_script_path = "/Users/kishore/Desktop/Tools/SYLER_GITHUB/K8SeasywayGCP/scripts/latest/k8sworker_bootstrap.sh"
